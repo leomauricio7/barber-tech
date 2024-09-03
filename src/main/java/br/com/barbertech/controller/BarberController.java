@@ -1,7 +1,7 @@
 package br.com.barbertech.controller;
 
 import br.com.barbertech.entity.BarberEntity;
-import br.com.barbertech.repository.BarberRepository;
+import br.com.barbertech.service.BarberService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,50 +11,51 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@RequestMapping("/barber")
 @RestController
 public class BarberController {
 
     @Autowired
-    private BarberRepository _barberRepository;
+    private BarberService barberService;
 
-    @RequestMapping(value = "/barber", method = RequestMethod.GET)
-    public List<BarberEntity> Get() {
-        return _barberRepository.findAll();
+    @GetMapping()
+    public List<BarberEntity> get() {
+        return barberService.get();
     }
 
-    @RequestMapping(value = "/barber/{id}", method = RequestMethod.GET)
-    public ResponseEntity<BarberEntity> GetById(@PathVariable(value = "id") long id)
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<BarberEntity> getById(@PathVariable(value = "id") long id)
     {
-        Optional<BarberEntity> barber = _barberRepository.findById(id);
+        Optional<BarberEntity> barber = barberService.findById(id);
         return barber.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(value = "/barber", method =  RequestMethod.POST)
+    @PostMapping()
     public BarberEntity Post(@Valid @RequestBody BarberEntity barberEntity)
     {
-        return _barberRepository.save(barberEntity);
+        return barberService.save(barberEntity);
     }
 
-    @RequestMapping(value = "/barber/{id}", method =  RequestMethod.PUT)
-    public ResponseEntity<BarberEntity> Put(@PathVariable(value = "id") long id, @Valid @RequestBody BarberEntity newBarberEntity)
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<BarberEntity> put(@PathVariable(value = "id") long id, @Valid @RequestBody BarberEntity newBarberEntity)
     {
-        Optional<BarberEntity> oldBarber = _barberRepository.findById(id);
+        Optional<BarberEntity> oldBarber = barberService.findById(id);
         if(oldBarber.isPresent()){
             BarberEntity barberEntity = oldBarber.get();
             barberEntity.setName(newBarberEntity.getName());
-            _barberRepository.save(barberEntity);
+            barberService.save(barberEntity);
             return new ResponseEntity<BarberEntity>(barberEntity, HttpStatus.OK);
         }
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/barber/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Object> Delete(@PathVariable(value = "id") long id)
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Object> delete(@PathVariable(value = "id") long id)
     {
-        Optional<BarberEntity> barber = _barberRepository.findById(id);
+        Optional<BarberEntity> barber = barberService.findById(id);
         if(barber.isPresent()){
-            _barberRepository.delete(barber.get());
+            barberService.deleteById(barber.get().getId());
             return new ResponseEntity<>(HttpStatus.OK);
         }
         else
