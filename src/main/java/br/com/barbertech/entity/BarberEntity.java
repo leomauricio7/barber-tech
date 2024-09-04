@@ -11,7 +11,7 @@ import lombok.Setter;
 @Entity()
 public class BarberEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)
