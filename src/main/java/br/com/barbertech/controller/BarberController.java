@@ -18,41 +18,40 @@ import java.util.Optional;
 public class BarberController {
 
     @Autowired
-    private BarberService barberService;
+    private BarberService service;
 
-    private final BarberMapper barberMapper = new BarberMapper();
 
     @GetMapping()
     public List<BarberEntity> get() {
-        return barberService.get();
+        return service.get();
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<BarberEntity> getById(@PathVariable(value = "id") long id)
     {
-        Optional<BarberEntity> barber = barberService.findById(id);
-        return barber.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Optional<BarberEntity> entity = service.findById(id);
+        return entity.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping()
-    public ResponseEntity<BarberEntity> Post(@Valid @RequestBody BarberDTO barberDTO)
+    public ResponseEntity<BarberEntity> Post(@Valid @RequestBody BarberDTO dto)
     {
-        BarberEntity barber =  barberService.save(barberDTO);
-        return new ResponseEntity<BarberEntity>(barber, HttpStatus.OK);
+        BarberEntity entity =  service.save(dto);
+        return new ResponseEntity<BarberEntity>(entity, HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BarberEntity> put(@PathVariable(value = "id") long id, @Valid @RequestBody BarberDTO barberDTO)
+    public ResponseEntity<BarberEntity> put(@PathVariable(value = "id") long id, @Valid @RequestBody BarberDTO dto)
     {
-        Optional<BarberEntity> oldBarber = barberService.findById(id);
-        if(oldBarber.isPresent()){
+        Optional<BarberEntity> entity = service.findById(id);
+        if(entity.isPresent()){
 
-            oldBarber.get().setName(barberDTO.getName());
-            oldBarber.get().setEmail(barberDTO.getEmail());
-            oldBarber.get().setPhone(barberDTO.getPhone());
-            oldBarber.get().setGender(barberDTO.getGender());
-            BarberEntity barberEntity = barberService.update(oldBarber.get());
-            return new ResponseEntity<BarberEntity>(barberEntity, HttpStatus.OK);
+            entity.get().setName(dto.getName());
+            entity.get().setEmail(dto.getEmail());
+            entity.get().setPhone(dto.getPhone());
+            entity.get().setGender(dto.getGender());
+            BarberEntity entityUpdate = service.update(entity.get());
+            return new ResponseEntity<BarberEntity>(entityUpdate, HttpStatus.OK);
         }
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -61,9 +60,9 @@ public class BarberController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") long id)
     {
-        Optional<BarberEntity> barber = barberService.findById(id);
-        if(barber.isPresent()){
-            barberService.deleteById(barber.get().getId());
+        Optional<BarberEntity> entity = service.findById(id);
+        if(entity.isPresent()){
+            service.deleteById(entity.get().getId());
             return new ResponseEntity<>(HttpStatus.OK);
         }
         else

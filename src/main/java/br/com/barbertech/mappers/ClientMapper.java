@@ -1,18 +1,20 @@
 package br.com.barbertech.mappers;
 
 import br.com.barbertech.dto.BarberDTO;
+import br.com.barbertech.dto.ClientDTO;
 import br.com.barbertech.entity.BarberEntity;
+import br.com.barbertech.entity.ClientEntity;
 
-public class BarberMapper implements Mapper<BarberEntity, BarberDTO> {
+public class ClientMapper implements Mapper<ClientEntity, ClientDTO> {
 
     private final AddressMapper addressMapper = new AddressMapper();
 
     @Override
-    public BarberDTO toDTO(BarberEntity entity) {
+    public ClientDTO toDTO(ClientEntity entity) {
         if (entity == null) {
             return null;
         }
-        BarberDTO dto = new BarberDTO();
+        ClientDTO dto = new ClientDTO();
         dto.setName(entity.getName());
         dto.setEmail(entity.getEmail());
         dto.setPhone(entity.getPhone());
@@ -22,11 +24,11 @@ public class BarberMapper implements Mapper<BarberEntity, BarberDTO> {
     }
 
     @Override
-    public BarberEntity toEntity(BarberDTO dto) {
+    public ClientEntity toEntity(ClientDTO dto) {
         if (dto == null) {
             return null;
         }
-        BarberEntity entity = new BarberEntity();
+        ClientEntity entity = new ClientEntity();
         entity.setName(dto.getName());
         entity.setEmail(dto.getEmail());
         entity.setPhone(dto.getPhone());

@@ -26,14 +26,14 @@ public class BarberService {
         this.addressRepository = addressRepository;
     }
 
-    public BarberEntity save(BarberDTO barberDTO) {
-        BarberEntity barber = barberMapper.toEntity(barberDTO);
-        BarberEntity barberEntity = barberRepository.save(barber);
-        if (barber.getAddress() != null) {
-            barber.getAddress().setBarber(barberEntity);
-            addressRepository.save(barber.getAddress());
+    public BarberEntity save(BarberDTO dto) {
+        BarberEntity entity = barberMapper.toEntity(dto);
+        BarberEntity entitySave = barberRepository.save(entity);
+        if (entity.getAddress() != null) {
+            entity.getAddress().setBarber(entitySave);
+            addressRepository.save(entity.getAddress());
         }
-        return barberEntity;
+        return entitySave;
     }
 
     public List<BarberEntity> get() {
@@ -47,12 +47,12 @@ public class BarberService {
         barberRepository.deleteById(id);
     }
 
-    public BarberEntity update(BarberEntity barberEntity) {
-        BarberEntity barberEntitySave = barberRepository.save(barberEntity);
-        if (barberEntity.getAddress() != null) {
-            addressRepository.save(barberEntity.getAddress());
+    public BarberEntity update(BarberEntity entity) {
+        BarberEntity entitySave = barberRepository.save(entity);
+        if (entity.getAddress() != null) {
+            addressRepository.save(entity.getAddress());
         }
-        return barberEntitySave;
+        return entitySave;
     }
 
 }
