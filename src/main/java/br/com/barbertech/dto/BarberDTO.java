@@ -26,7 +26,6 @@ public class BarberDTO {
     @Email(message = "Email invalido")
     private String email;
 
-    @Null()
     private AddressDTO address;
 
 
