@@ -1,11 +1,14 @@
 package br.com.barbertech.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Getter
 @Setter
-@Entity
+@Entity()
 public class BarberEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,4 +16,16 @@ public class BarberEntity {
 
     @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    private String phone;
+
+    @Column(nullable = false)
+    private String email;
+
+    // Relacionamento com Address (1:1)
+    @OneToOne(mappedBy = "barber", cascade = CascadeType.ALL)
+    @JsonManagedReference // Garante que esta coleção seja serializada
+    private AddressEntity address;
+
 }

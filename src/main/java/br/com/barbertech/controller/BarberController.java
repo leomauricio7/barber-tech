@@ -1,5 +1,6 @@
 package br.com.barbertech.controller;
 
+import br.com.barbertech.dto.BarberDTO;
 import br.com.barbertech.entity.BarberEntity;
 import br.com.barbertech.service.BarberService;
 import jakarta.validation.Valid;
@@ -31,19 +32,19 @@ public class BarberController {
     }
 
     @PostMapping()
-    public BarberEntity Post(@Valid @RequestBody BarberEntity barberEntity)
+    public ResponseEntity<BarberEntity> Post(@Valid @RequestBody BarberDTO barberDTO)
     {
-        return barberService.save(barberEntity);
+        BarberEntity barber =  barberService.save(barberDTO);
+        return new ResponseEntity<BarberEntity>(barber, HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BarberEntity> put(@PathVariable(value = "id") long id, @Valid @RequestBody BarberEntity newBarberEntity)
+    public ResponseEntity<BarberEntity> put(@PathVariable(value = "id") long id, @Valid @RequestBody BarberDTO barberDTO)
     {
         Optional<BarberEntity> oldBarber = barberService.findById(id);
         if(oldBarber.isPresent()){
-            BarberEntity barberEntity = oldBarber.get();
-            barberEntity.setName(newBarberEntity.getName());
-            barberService.save(barberEntity);
+
+            BarberEntity barberEntity = barberService.save(barberDTO);
             return new ResponseEntity<BarberEntity>(barberEntity, HttpStatus.OK);
         }
         else
