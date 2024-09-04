@@ -2,6 +2,7 @@ package br.com.barbertech.controller;
 
 import br.com.barbertech.dto.BarberDTO;
 import br.com.barbertech.entity.BarberEntity;
+import br.com.barbertech.mappers.BarberMapper;
 import br.com.barbertech.service.BarberService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ public class BarberController {
 
     @Autowired
     private BarberService barberService;
+
+    private final BarberMapper barberMapper = new BarberMapper();
 
     @GetMapping()
     public List<BarberEntity> get() {
@@ -44,7 +47,11 @@ public class BarberController {
         Optional<BarberEntity> oldBarber = barberService.findById(id);
         if(oldBarber.isPresent()){
 
-            BarberEntity barberEntity = barberService.save(barberDTO);
+            oldBarber.get().setName(barberDTO.getName());
+            oldBarber.get().setEmail(barberDTO.getEmail());
+            oldBarber.get().setPhone(barberDTO.getPhone());
+            oldBarber.get().setGender(barberDTO.getGender());
+            BarberEntity barberEntity = barberService.update(oldBarber.get());
             return new ResponseEntity<BarberEntity>(barberEntity, HttpStatus.OK);
         }
         else

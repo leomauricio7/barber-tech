@@ -16,6 +16,7 @@ public class BarberMapper implements Mapper<BarberEntity, BarberDTO> {
         barberDTO.setName(barber.getName());
         barberDTO.setEmail(barber.getEmail());
         barberDTO.setPhone(barber.getPhone());
+        barberDTO.setGender(barber.getGender());
         barberDTO.setAddress(addressMapper.toDTO(barber.getAddress()));
         return barberDTO;
     }
@@ -29,6 +30,7 @@ public class BarberMapper implements Mapper<BarberEntity, BarberDTO> {
         barber.setName(barberDTO.getName());
         barber.setEmail(barberDTO.getEmail());
         barber.setPhone(barberDTO.getPhone());
+        barber.setGender(barberDTO.getGender());
         barber.setAddress(addressMapper.toEntity(barberDTO.getAddress()));
         return barber;
     }

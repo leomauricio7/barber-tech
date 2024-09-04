@@ -47,6 +47,12 @@ public class BarberService {
         barberRepository.deleteById(id);
     }
 
-
+    public BarberEntity update(BarberEntity barberEntity) {
+        BarberEntity barberEntitySave = barberRepository.save(barberEntity);
+        if (barberEntity.getAddress() != null) {
+            addressRepository.save(barberEntity.getAddress());
+        }
+        return barberEntitySave;
+    }
 
 }

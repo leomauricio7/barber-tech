@@ -26,9 +26,16 @@ public class AddressEntity {
     @Column(nullable = false)
     private String zipCode;
 
-    // Relacionamento com Barber (1:1)
+    // Relacionamento com BarberEntity (1:1)
     @OneToOne(optional = true)
     @JoinColumn(name = "barber_id")
     @JsonBackReference // Evita serialização para quebrar o loop
     private BarberEntity barber;
+
+
+    // Relacionamento com Barber (1:1)
+    @OneToOne(optional = true)
+    @JoinColumn(name = "client_id")
+    @JsonBackReference // Evita serialização para quebrar o loop
+    private ClientEntity client;
 }

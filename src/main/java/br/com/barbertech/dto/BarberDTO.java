@@ -1,5 +1,7 @@
 package br.com.barbertech.dto;
 
+import br.com.barbertech.enums.GenderEnum;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +27,11 @@ public class BarberDTO {
     @NotBlank(message = "Campo email é obrigatório")
     @Email(message = "Email invalido")
     private String email;
+
+
+    @NotNull(message = "Campo gender é obrigatório")
+    private GenderEnum gender;
+
 
     private AddressDTO address;
 
