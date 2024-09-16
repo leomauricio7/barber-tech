@@ -1,7 +1,9 @@
 package br.com.barbertech.controller;
 
+import br.com.barbertech.dto.BarberDTO;
 import br.com.barbertech.entity.BarberEntity;
-import br.com.barbertech.repository.BarberRepository;
+import br.com.barbertech.mappers.BarberMapper;
+import br.com.barbertech.service.BarberService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,50 +13,56 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@RequestMapping("/barber")
 @RestController
 public class BarberController {
 
     @Autowired
-    private BarberRepository _barberRepository;
+    private BarberService service;
 
-    @RequestMapping(value = "/barber", method = RequestMethod.GET)
-    public List<BarberEntity> Get() {
-        return _barberRepository.findAll();
+
+    @GetMapping()
+    public List<BarberEntity> get() {
+        return service.get();
     }
 
-    @RequestMapping(value = "/barber/{id}", method = RequestMethod.GET)
-    public ResponseEntity<BarberEntity> GetById(@PathVariable(value = "id") long id)
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<BarberEntity> getById(@PathVariable(value = "id") long id)
     {
-        Optional<BarberEntity> barber = _barberRepository.findById(id);
-        return barber.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Optional<BarberEntity> entity = service.findById(id);
+        return entity.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(value = "/barber", method =  RequestMethod.POST)
-    public BarberEntity Post(@Valid @RequestBody BarberEntity barberEntity)
+    @PostMapping()
+    public ResponseEntity<BarberEntity> Post(@Valid @RequestBody BarberDTO dto)
     {
-        return _barberRepository.save(barberEntity);
+        BarberEntity entity =  service.save(dto);
+        return new ResponseEntity<BarberEntity>(entity, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/barber/{id}", method =  RequestMethod.PUT)
-    public ResponseEntity<BarberEntity> Put(@PathVariable(value = "id") long id, @Valid @RequestBody BarberEntity newBarberEntity)
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<BarberEntity> put(@PathVariable(value = "id") long id, @Valid @RequestBody BarberDTO dto)
     {
-        Optional<BarberEntity> oldBarber = _barberRepository.findById(id);
-        if(oldBarber.isPresent()){
-            BarberEntity barberEntity = oldBarber.get();
-            barberEntity.setName(newBarberEntity.getName());
-            _barberRepository.save(barberEntity);
-            return new ResponseEntity<BarberEntity>(barberEntity, HttpStatus.OK);
+        Optional<BarberEntity> entity = service.findById(id);
+        if(entity.isPresent()){
+
+            entity.get().setName(dto.getName());
+            entity.get().setEmail(dto.getEmail());
+            entity.get().setPhone(dto.getPhone());
+            entity.get().setGender(dto.getGender());
+            BarberEntity entityUpdate = service.update(entity.get());
+            return new ResponseEntity<BarberEntity>(entityUpdate, HttpStatus.OK);
         }
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/barber/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Object> Delete(@PathVariable(value = "id") long id)
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Object> delete(@PathVariable(value = "id") long id)
     {
-        Optional<BarberEntity> barber = _barberRepository.findById(id);
-        if(barber.isPresent()){
-            _barberRepository.delete(barber.get());
+        Optional<BarberEntity> entity = service.findById(id);
+        if(entity.isPresent()){
+            service.deleteById(entity.get().getId());
             return new ResponseEntity<>(HttpStatus.OK);
         }
         else
