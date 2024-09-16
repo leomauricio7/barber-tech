@@ -47,5 +47,4 @@ public class CompanyEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-
 }
