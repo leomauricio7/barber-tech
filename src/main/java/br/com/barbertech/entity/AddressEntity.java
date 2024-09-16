@@ -38,4 +38,10 @@ public class AddressEntity {
     @JoinColumn(name = "client_id")
     @JsonBackReference // Evita serialização para quebrar o loop
     private ClientEntity client;
+
+    // Relacionamento com company (1:1)
+    @OneToOne(optional = true)
+    @JoinColumn(name = "companay_id")
+    @JsonBackReference // Evita serialização para quebrar o loop
+    private CompanyEntity company;
 }

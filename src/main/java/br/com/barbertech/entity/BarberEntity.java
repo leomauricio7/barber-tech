@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity()
@@ -23,12 +25,29 @@ public class BarberEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @ManyToMany
+    @JoinTable(
+            name = "barber_service",
+            joinColumns = @JoinColumn(name = "barber_id"),
+            inverseJoinColumns = @JoinColumn(name = "service_id")
+    )
+    private List<ServiceEntity> services;
+
+    @ElementCollection
+    private List<String> openingHours;
+
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
 
-    // Relacionamento com Address (1:1)
-    @OneToOne(mappedBy = "barber", cascade = CascadeType.ALL)
-    @JsonManagedReference // Garante que esta coleção seja serializada
-    private AddressEntity address;
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private CompanyEntity company;
+
+    @OneToMany(mappedBy = "barber", cascade = CascadeType.ALL)
+    private List<SchedulingEntity> scheduling;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 
 }

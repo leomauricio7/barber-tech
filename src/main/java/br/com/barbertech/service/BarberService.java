@@ -28,12 +28,7 @@ public class BarberService {
 
     public BarberEntity save(BarberDTO dto) {
         BarberEntity entity = barberMapper.toEntity(dto);
-        BarberEntity entitySave = barberRepository.save(entity);
-        if (entity.getAddress() != null) {
-            entity.getAddress().setBarber(entitySave);
-            addressRepository.save(entity.getAddress());
-        }
-        return entitySave;
+        return barberRepository.save(entity);
     }
 
     public List<BarberEntity> get() {
@@ -48,11 +43,7 @@ public class BarberService {
     }
 
     public BarberEntity update(BarberEntity entity) {
-        BarberEntity entitySave = barberRepository.save(entity);
-        if (entity.getAddress() != null) {
-            addressRepository.save(entity.getAddress());
-        }
-        return entitySave;
+        return barberRepository.save(entity);
     }
 
 }

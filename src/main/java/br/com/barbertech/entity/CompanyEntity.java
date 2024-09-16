@@ -1,6 +1,6 @@
 package br.com.barbertech.entity;
 
-import br.com.barbertech.enums.GenderEnum;
+import br.com.barbertech.enums.StatusEnum;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class ClientEntity {
+public class CompanyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,24 +24,28 @@ public class ClientEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String phone;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+    @Column(nullable = false)
+    private String openingHours;
 
-    @Enumerated(EnumType.STRING)
-    private GenderEnum gender;
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<BarberEntity> barbers;
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<SchedulingEntity> scheduling;
 
-    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
-    @JsonManagedReference // Garante que esta coleção seja serializada
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<ServiceEntity> services;
+
+    @OneToOne(mappedBy = "company", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private AddressEntity address;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
+
 
 }

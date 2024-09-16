@@ -1,6 +1,7 @@
 package br.com.barbertech.entity;
 
 import br.com.barbertech.enums.GenderEnum;
+import br.com.barbertech.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,33 +16,29 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class ClientEntity {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)
-    private String name;
+    private String password;
 
     @Column(nullable = false, unique = true)
-    private String phone;
-
-    @Column(nullable = false, unique = true)
-    private String email;
+    private String username;
 
     @Enumerated(EnumType.STRING)
-    private GenderEnum gender;
+    private UserRole role;  // Tipo de usuário: ADMIN, BARBEIRO, CLIENTE, etc.
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<SchedulingEntity> scheduling;
 
-    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
-    @JsonManagedReference // Garante que esta coleção seja serializada
-    private AddressEntity address;
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+    private CompanyEntity company;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private BarberEntity barber;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ClientEntity client;
 
 }

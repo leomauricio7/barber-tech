@@ -34,7 +34,7 @@ public class ClientController {
     @PostMapping()
     public ResponseEntity<ClientEntity> Post(@Valid @RequestBody ClientDTO dto) {
         ClientEntity entity = service.save(dto);
-        return new ResponseEntity<ClientEntity>(entity, HttpStatus.OK);
+        return new ResponseEntity<ClientEntity>(entity, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
@@ -63,3 +63,5 @@ public class ClientController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
+
+
