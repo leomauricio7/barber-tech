@@ -2,6 +2,7 @@ package br.com.barbertech.entity;
 
 import br.com.barbertech.enums.GenderEnum;
 import br.com.barbertech.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
@@ -31,13 +33,15 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role;  // Tipo de usuário: ADMIN, BARBEIRO, CLIENTE, etc.
 
-
+    @JsonIgnore
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     private CompanyEntity company;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private BarberEntity barber;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private ClientEntity client;
 

@@ -1,14 +1,12 @@
 package br.com.barbertech.dto;
 
-import br.com.barbertech.enums.GenderEnum;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ClientDTO {
-
+public class CompanyDTO {
     private Long id;
 
     @NotBlank(message = "Campo name é obrigatório")
@@ -28,10 +26,11 @@ public class ClientDTO {
     private String email;
 
 
-    @NotNull(message = "Campo gender é obrigatório")
-    private GenderEnum gender;
+    @NotBlank(message = "Campo openingHours é obrigatório")
+    @Pattern(regexp = "^([01]\\d|2[0-3]):([0-5]\\d)-([01]\\d|2[0-3]):([0-5]\\d)$",
+            message = "O horário deve estar no formato HH:mm-HH:mm")
+    private String openingHours;
 
     private AddressDTO address;
-
 
 }

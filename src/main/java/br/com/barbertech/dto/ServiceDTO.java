@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ClientDTO {
+public class ServiceDTO {
 
     private Long id;
 
@@ -16,22 +16,16 @@ public class ClientDTO {
     @Pattern(regexp = "^[A-Za-zÀ-ÿ ]+$", message = "O nome deve conter apenas letras e espaços")
     private String name;
 
-    @NotBlank(message = "Campo phone é obrigatório")
+    @NotBlank(message = "Campo price é obrigatório")
     @Pattern(
-            regexp = "^\\d{2} \\d{4,5}-\\d{4}$",
-            message = "O phone deve estar no formato 84 99234-5678 ou 84 3234-5678"
+            regexp = "^\\d{1,3}(\\.\\d{3})*(,\\d{2})?$",
+            message = "O preço deve estar no formato 1.234,56"
     )
-    private String phone;
+    private String price;
 
-    @NotBlank(message = "Campo email é obrigatório")
-    @Email(message = "Email invalido")
-    private String email;
-
-
-    @NotNull(message = "Campo gender é obrigatório")
-    private GenderEnum gender;
-
-    private AddressDTO address;
+    @NotBlank(message = "Campo description é obrigatório")
+    @Pattern(regexp = "^[A-Za-zÀ-ÿ ]+$", message = "A descrição deve conter apenas letras e espaços")
+    private String description;
 
 
 }
