@@ -2,7 +2,6 @@ package br.com.barbertech.controller;
 
 import br.com.barbertech.dto.BarberDTO;
 import br.com.barbertech.entity.BarberEntity;
-import br.com.barbertech.mappers.BarberMapper;
 import br.com.barbertech.service.BarberService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,5 +66,35 @@ public class BarberController {
         }
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
+    @PostMapping("/{barberId}/services")
+    public BarberEntity linkServicesToBarber(
+            @PathVariable Long barberId,
+            @RequestBody List<Long> serviceIds) {
+        return service.linkServicesToBarber(barberId, serviceIds);
+    }
+
+
+    @GetMapping(value = "/company/{id}")
+    public ResponseEntity<List<BarberEntity>> findByCompanyId(@PathVariable(value = "id") long id) {
+        List<BarberEntity> entityList = service.findByCompanyId(id);
+        return new ResponseEntity<List<BarberEntity>>(entityList, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/service/{serviceId}/company/{companyId}")
+    public List<BarberEntity> getBarbersByServiceIdAndCompanyId(
+            @PathVariable Long serviceId,
+            @PathVariable Long companyId) {
+        return service.getBarbersByServiceIdAndCompanyId(serviceId, companyId);
+    }
+
+    @DeleteMapping("/{barberId}/services/{serviceId}")
+    public BarberEntity unlinkServiceFromBarber(
+            @PathVariable Long barberId,
+            @PathVariable Long serviceId) {
+        return service.unlinkServiceFromBarber(barberId, serviceId);
     }
 }

@@ -1,6 +1,7 @@
 package br.com.barbertech.entity;
 
 import br.com.barbertech.enums.GenderEnum;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,6 +35,7 @@ public class ClientEntity {
     private GenderEnum gender;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<SchedulingEntity> scheduling;
 
     @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
@@ -42,6 +44,7 @@ public class ClientEntity {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private UserEntity user;
 
 }

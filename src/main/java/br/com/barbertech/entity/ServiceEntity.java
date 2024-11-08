@@ -1,6 +1,7 @@
 package br.com.barbertech.entity;
 
 import br.com.barbertech.enums.GenderEnum;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,7 @@ public class ServiceEntity {
 
     @ManyToOne
     @JoinColumn(name = "company_id")
+    @JsonBackReference
     private CompanyEntity company;
 
 

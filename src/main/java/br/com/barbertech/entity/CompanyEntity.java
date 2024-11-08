@@ -1,12 +1,10 @@
 package br.com.barbertech.entity;
 
 import br.com.barbertech.enums.StatusEnum;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -15,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 public class CompanyEntity {
 
     @Id
@@ -34,12 +33,15 @@ public class CompanyEntity {
     private String openingHours;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<BarberEntity> barbers;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<SchedulingEntity> scheduling;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<ServiceEntity> services;
 
     @OneToOne(mappedBy = "company", cascade = CascadeType.ALL)
@@ -48,6 +50,7 @@ public class CompanyEntity {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private UserEntity user;
 
 }

@@ -5,6 +5,8 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 public class ServiceDTO {
@@ -16,16 +18,15 @@ public class ServiceDTO {
     @Pattern(regexp = "^[A-Za-zÀ-ÿ ]+$", message = "O nome deve conter apenas letras e espaços")
     private String name;
 
-    @NotBlank(message = "Campo price é obrigatório")
-    @Pattern(
-            regexp = "^\\d{1,3}(\\.\\d{3})*(,\\d{2})?$",
-            message = "O preço deve estar no formato 1.234,56"
-    )
-    private String price;
+    @NotNull(message = "Campo price é obrigatório")
+    private BigDecimal price;
 
     @NotBlank(message = "Campo description é obrigatório")
     @Pattern(regexp = "^[A-Za-zÀ-ÿ ]+$", message = "A descrição deve conter apenas letras e espaços")
     private String description;
 
+
+    @NotNull(message = "Campo idCompany é obrigatório")
+    private Long idCompany;
 
 }

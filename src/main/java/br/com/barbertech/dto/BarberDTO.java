@@ -32,6 +32,8 @@ public class BarberDTO {
     @NotNull(message = "Campo gender é obrigatório")
     private GenderEnum gender;
 
+    @NotNull(message = "Campo idCompany é obrigatório")
+    private Long idCompany;
 
     private AddressDTO address;
 
