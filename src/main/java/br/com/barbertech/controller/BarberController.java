@@ -3,12 +3,17 @@ package br.com.barbertech.controller;
 import br.com.barbertech.dto.BarberDTO;
 import br.com.barbertech.entity.BarberEntity;
 import br.com.barbertech.service.BarberService;
+import br.com.barbertech.service.SchedulingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +23,9 @@ public class BarberController {
 
     @Autowired
     private BarberService service;
+
+    @Autowired
+    private SchedulingService schedulingService;
 
 
     @GetMapping()
@@ -96,5 +104,15 @@ public class BarberController {
             @PathVariable Long barberId,
             @PathVariable Long serviceId) {
         return service.unlinkServiceFromBarber(barberId, serviceId);
+    }
+
+
+    @GetMapping("/{barberId}/availability")
+    public ResponseEntity<List<String>> getAvailableTimes(
+            @PathVariable Long barberId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date selectedDate) throws ParseException {
+
+        List<String> availableTimes = service.getAvailableTimes(barberId, selectedDate);
+        return ResponseEntity.ok(availableTimes);
     }
 }

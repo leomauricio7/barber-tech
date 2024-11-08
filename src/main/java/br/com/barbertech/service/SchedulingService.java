@@ -1,21 +1,35 @@
 package br.com.barbertech.service;
 
 import br.com.barbertech.entity.BarberEntity;
+import br.com.barbertech.entity.CompanyEntity;
 import br.com.barbertech.entity.SchedulingEntity;
 import br.com.barbertech.exception.BadRequestException;
+import br.com.barbertech.exception.NotFoundException;
+import br.com.barbertech.repository.BarberRepository;
+import br.com.barbertech.repository.CompanyRepository;
 import br.com.barbertech.repository.SchedulingRepository;
 import br.com.barbertech.enums.StatusSchedulingEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SchedulingService {
 
     @Autowired
     private SchedulingRepository schedulingRepository;
+
+    @Autowired
+    private BarberRepository barberRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
+
 
     public SchedulingEntity save(SchedulingEntity schedulingEntity) {
 
@@ -71,4 +85,5 @@ public class SchedulingService {
     public List<SchedulingEntity> getByBarberAndServiceAndStatus(Long barberId, Long serviceId, StatusSchedulingEnum status) {
         return schedulingRepository.findByBarberAndServiceAndStatus(barberId, serviceId, status);
     }
+
 }

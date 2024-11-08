@@ -39,4 +39,11 @@ public interface SchedulingRepository extends JpaRepository<SchedulingEntity, Lo
 
     // Verifica se existe algum agendamento para o barbeiro, no mesmo dia e horário
     Optional<SchedulingEntity> findByBarberIdAndDate(Long barberId, Date date);
+
+
+    @Query("SELECT s FROM SchedulingEntity s WHERE s.barber.id = :barberId " +
+            "AND s.date BETWEEN :startOfDay AND :endOfDay")
+    List<SchedulingEntity> findByBarberIdAndDateBetween(@Param("barberId") Long barberId,
+                                                        @Param("startOfDay") Date startOfDay,
+                                                        @Param("endOfDay") Date endOfDay);
 }
