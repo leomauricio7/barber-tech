@@ -65,6 +65,11 @@ public class CompanyController {
         } else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/search")
+    public List<CompanyEntity> getBarbersByName(@RequestParam String name) {
+        return service.findBarbersByName(name);
+    }
 }
 
 

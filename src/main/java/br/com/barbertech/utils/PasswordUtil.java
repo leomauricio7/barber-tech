@@ -24,4 +24,13 @@ public class PasswordUtil {
             throw new RuntimeException(e);
         }
     }
+
+
+    public static boolean validatePassword(String plainPassword, String hashedPassword) {
+        // Gera o hash da senha informada pelo usuário
+        String hashedInputPassword = PasswordUtil.hashPassword(plainPassword);
+
+        // Compara o hash gerado com o hash salvo no banco
+        return hashedInputPassword.equals(hashedPassword);
+    }
 }

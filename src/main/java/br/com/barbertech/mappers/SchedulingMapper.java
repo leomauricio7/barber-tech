@@ -2,6 +2,7 @@ package br.com.barbertech.mappers;
 
 import br.com.barbertech.dto.SchedulingDTO;
 import br.com.barbertech.entity.*;
+import br.com.barbertech.enums.StatusSchedulingEnum;
 import br.com.barbertech.exception.NotFoundException;
 import br.com.barbertech.repository.BarberRepository;
 import br.com.barbertech.repository.ClientRepository;
@@ -38,7 +39,7 @@ public class SchedulingMapper {
         dto.setIdBarber(schedulingEntity.getBarber().getId());
         dto.setIdService(schedulingEntity.getServiceEntity().getId());
         dto.setDate(schedulingEntity.getDate());
-        dto.setStatus(schedulingEntity.getStatus());
+        dto.setStatus(StatusSchedulingEnum.PENDENTE);
 
         return dto;
     }

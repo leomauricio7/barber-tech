@@ -3,6 +3,7 @@ package br.com.barbertech.service;
 import br.com.barbertech.dto.ClientDTO;
 import br.com.barbertech.dto.CompanyDTO;
 import br.com.barbertech.dto.UserDTO;
+import br.com.barbertech.entity.BarberEntity;
 import br.com.barbertech.entity.ClientEntity;
 import br.com.barbertech.entity.CompanyEntity;
 import br.com.barbertech.entity.UserEntity;
@@ -76,6 +77,11 @@ public class CompanyService {
             addressRepository.save(entity.getAddress());
         }
         return entitySave;
+    }
+
+
+    public List<CompanyEntity> findBarbersByName(String name) {
+        return companyRepository.findByNameContainingIgnoreCase(name);
     }
 
 }
