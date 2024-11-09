@@ -33,15 +33,15 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role;  // Tipo de usuário: ADMIN, BARBEIRO, CLIENTE, etc.
 
-    @JsonIgnore
+
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     private CompanyEntity company;
 
-    @JsonIgnore
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private BarberEntity barber;
 
-    @JsonIgnore
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private ClientEntity client;
 
