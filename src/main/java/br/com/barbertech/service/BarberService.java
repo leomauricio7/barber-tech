@@ -4,6 +4,7 @@ import br.com.barbertech.dto.BarberDTO;
 import br.com.barbertech.dto.UserDTO;
 import br.com.barbertech.entity.*;
 import br.com.barbertech.enums.UserRole;
+import br.com.barbertech.exception.BadRequestException;
 import br.com.barbertech.exception.NotFoundException;
 import br.com.barbertech.mappers.BarberMapper;
 import br.com.barbertech.repository.*;
@@ -142,6 +143,10 @@ public class BarberService {
         Date endTime = timeFormat.parse(hours[1]);
 
 
+        if(PasswordUtil.isBeforeToday(selectedDate)){
+            throw new BadRequestException("Data é passada, envie uma data maior ou igual a hoje.");
+        }
+
         // Ajustar a data de entrada para ter apenas ano, mês e dia
         Calendar selectedCalendar = Calendar.getInstance();
         selectedCalendar.setTime(selectedDate);
@@ -157,8 +162,29 @@ public class BarberService {
         Date endOfDay = selectedCalendar.getTime();
 
 
+        List<String> allTimes =  generateTimeSlots(startTime, endTime);
+
+        // valida se a data passada é igual a data atual
+        if(PasswordUtil.isSameDay(selectedDate)){
+
+            // valido se a hora atual pe maior que a hora final
+            int result = PasswordUtil.compareHours(hours[1], PasswordUtil.getCurrentTime());
+            // se a hora final de funcionamento for antes da hora atual
+            if(result == -1){
+                allTimes = new ArrayList<>();
+            }else{
+                // se a hora não for passada, eu seto o horario inicio como o horal real a busca
+
+                // splito a hora real para poder separa tipo 23:01 ai fica em dois dados [23,01]
+                // ai sempre zero os minutos
+                String[] hoursNew = PasswordUtil.getCurrentTime().split(":");
+               startTime = timeFormat.parse(hoursNew[0]+":00");
+               allTimes = generateTimeSlots(startTime, endTime);
+            }
+        }
+
         // Gerar intervalos de 30 minutos
-        List<String> allTimes = generateTimeSlots(startTime, endTime);
+
 
         // Filtrar agendamentos existentes para o barbeiro na data selecionada
         List<Date> scheduledTimes = schedulingRepository.findByBarberIdAndDateBetween(barberId,  startOfDay, endOfDay)
