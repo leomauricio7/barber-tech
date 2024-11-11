@@ -68,8 +68,8 @@ public class BarberControllerTest {
         BarberDTO barberDTO = new BarberDTO();
         barberDTO.setName("John Doe");
         barberDTO.setEmail("johndoe@example.com");
-        barberDTO.setPhone("84 12345-6789"); // Certifique-se de que o formato do telefone está correto
-        barberDTO.setGender(GenderEnum.M); // Use o valor correto do GenderEnum
+        barberDTO.setPhone("84 12345-6789");
+        barberDTO.setGender(GenderEnum.M);
 
         BarberEntity barber = new BarberEntity();
         barber.setId(1L);
