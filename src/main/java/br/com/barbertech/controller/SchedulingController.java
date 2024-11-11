@@ -70,8 +70,10 @@ public class SchedulingController {
 
     // Endpoint para buscar agendamentos por ID do cliente
     @GetMapping("/client/{clientId}")
-    public List<SchedulingEntity> getSchedulingByClientId(@PathVariable Long clientId) {
-        return schedulingService.getByClientId(clientId);
+    public List<SchedulingEntity> getSchedulingByClientId(@PathVariable Long clientId,
+                                                          @RequestParam(defaultValue = "date") String sortBy,
+                                                          @RequestParam(defaultValue = "ASC") String direction) {
+        return schedulingService.getByClientId(clientId, sortBy, direction);
     }
 
     // Endpoint para buscar agendamentos por ID da empresa

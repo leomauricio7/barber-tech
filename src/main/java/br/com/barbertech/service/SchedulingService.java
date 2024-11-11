@@ -10,6 +10,7 @@ import br.com.barbertech.repository.CompanyRepository;
 import br.com.barbertech.repository.SchedulingRepository;
 import br.com.barbertech.enums.StatusSchedulingEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -66,8 +67,9 @@ public class SchedulingService {
         return schedulingRepository.findByServiceEntityId(serviceId);
     }
 
-    public List<SchedulingEntity> getByClientId(Long clientId) {
-        return schedulingRepository.findByClientId(clientId);
+    public List<SchedulingEntity> getByClientId(Long clientId,  String sortBy, String direction) {
+        Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
+        return schedulingRepository.findByClientId(clientId, sort);
     }
 
     public List<SchedulingEntity> getByCompanyId(Long companyId) {

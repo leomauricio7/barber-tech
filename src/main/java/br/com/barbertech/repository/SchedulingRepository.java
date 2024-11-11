@@ -3,6 +3,7 @@ package br.com.barbertech.repository;
 
 import br.com.barbertech.entity.SchedulingEntity;
 import br.com.barbertech.enums.StatusSchedulingEnum;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,7 +21,7 @@ public interface SchedulingRepository extends JpaRepository<SchedulingEntity, Lo
     List<SchedulingEntity> findByServiceEntityId(Long serviceId);
 
     // Filtrar por ID do cliente
-    List<SchedulingEntity> findByClientId(Long clientId);
+    List<SchedulingEntity> findByClientId(Long clientId, Sort sort);
 
     // Filtrar por ID da empresa
     List<SchedulingEntity> findByCompanyId(Long companyId);
